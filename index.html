@@ -303,7 +303,21 @@ function pickIdentity(after) {
     <div class="names" id="names">${list.map(m => `<button data-a="pick" data-id="${m.id}">${esc(m.name)}</button>`).join('')}</div>
     <div id="addbox">
       <button class="btn ghost" data-a="new">Je ne suis pas dans la liste</button>
+      <div style="text-align:center;margin-top:6px"><button class="link" data-a="coach">★ Je suis le coach</button></div>
     </div>`, async (a, t) => {
+    if (a === 'coach') {
+      $('#addbox').innerHTML = `<label class="field"><span>Mot de passe coach</span><input id="ck" type="password" autocomplete="off" autocapitalize="none" autocorrect="off"></label><button class="btn gold" data-a="coachok">Entrer</button>`;
+      $('#ck').focus();
+    }
+    if (a === 'coachok') {
+      const k = $('#ck').value.trim().toLowerCase().replace(/\s+/g, '');
+      if (!k) return;
+      t.disabled = true; t.innerHTML = '<span class="spin"></span>';
+      try {
+        if (await S.api.coachOk(k)) { S.coach = k; store.set('coach', k); closeSheet(); toast('Mode coach activé ★'); renderWho(); route(); }
+        else { toast('Mot de passe incorrect', true); t.disabled = false; t.textContent = 'Entrer'; }
+      } catch (e) { toast(errMsg(e), true); t.disabled = false; t.textContent = 'Entrer'; }
+    }
     if (a === 'pick') { setMe(t.dataset.id); closeSheet(); after && after(); }
     if (a === 'new') {
       $('#addbox').innerHTML = `<label class="field"><span>Ton prénom (et l'initiale du nom si besoin)</span><input id="newname" maxlength="40" placeholder="Ex. Paul D." autocomplete="off"></label><button class="btn gold" data-a="add">C'est moi</button>`;
@@ -856,6 +870,7 @@ function viewMembers() {
   try {
     S.api = await makeApi();
     await loadAll();
+    if (S.coach) { try { if (!(await S.api.coachOk(S.coach))) { S.coach = null; store.set('coach', null); } } catch {} }
   } catch (e) {
     $('#app').innerHTML = `<h1>Connexion impossible</h1><p class="sub">${esc(errMsg(e))}</p><button class="btn" onclick="location.reload()">Réessayer</button>`;
     return;
