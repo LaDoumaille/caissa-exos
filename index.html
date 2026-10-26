@@ -441,7 +441,8 @@ function viewBoardTable() {
 
 // ================= Exo (membres et coach) =================
 async function viewExo(num) {
-  const ex = exoByNum(num);
+  let ex = exoByNum(num);
+  if (!ex) { try { await loadAll(); renderWho(); } catch {} ex = exoByNum(num); }
   if (!ex) { $('#app').innerHTML = `<h1>Exo introuvable</h1><p class="sub">Il a peut-être été supprimé.</p><a class="btn" href="#/">Retour aux exos</a>`; return; }
   const coach = !!S.coach; const revealed = ex.status === 'revealed';
   const correct = revealed ? (ex.correct || []) : (coach ? await loadSolution(ex) : []);
