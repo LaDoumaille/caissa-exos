@@ -1,0 +1,29 @@
+# Garde la base Supabase gratuite éveillée (elle se met en pause après 7 jours sans activité)
+# et garde ce dépôt actif (GitHub coupe les tâches planifiées après 60 jours sans commit).
+name: keepalive
+on:
+  schedule:
+    - cron: '17 6 */3 * *'   # tous les 3 jours, 6h17 UTC
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          curl -fsS "https://gccyhuqhgnfoqbbmddio.supabase.co/rest/v1/exercises?select=num&limit=1" \
+            -H "apikey: sb_publishable_AToTLFhUYhWZsUlmM9D6jw_Oz26dg1r" > /dev/null
+          echo "Supabase OK"
+      - uses: actions/checkout@v4
+      - name: Battement mensuel du dépôt
+        run: |
+          if [ "$(date -u +%d)" -le 03 ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            date -u +%Y-%m-%dT%H:%MZ > .keepalive
+            git config user.name "caissa-bot"
+            git config user.email "caissa-bot@users.noreply.github.com"
+            git add .keepalive
+            git commit -m "keepalive $(date -u +%Y-%m)" || echo "rien à commiter"
+            git push || echo "push impossible"
+          fi
