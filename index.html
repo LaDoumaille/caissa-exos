@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Challenges Caïssa</title>
+<meta name="description" content="Trouve le bon coup, réponds, et découvre la correction du GM.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Challenges Caïssa ♞ À toi de jouer">
+<meta property="og:description" content="Trouve le bon coup, réponds, et découvre la correction en vidéo.">
+<meta property="og:image" content="https://caissa-bordeaux.fr/img/og-caissa-bordeaux.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="theme-color" content="#16132c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Caïssa">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="https://caissa-bordeaux.fr/apple-touch-icon.png">
+<link rel="icon" href="https://caissa-bordeaux.fr/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.base.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.brown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.cburnett.css">
+<style>
+:root{
+  --bg:#0d0b1c; --bg2:#16132c; --card:#1f1b3b; --card2:#322c53; --line:#3a3462;
+  --text:#fbfbfb; --muted:#c6c4d3; --faint:#8d88aa;
+  --gold:#e09669; --gold2:#f0c4a5; --green:#4cc38a; --green-bg:rgba(76,195,138,.14);
+  --red:#d77680; --red-bg:rgba(215,118,128,.16); --blue:#5aa5e8;
+  --r:16px; --shadow:0 12px 34px rgba(0,0,0,.45);
+  --head:"Outfit","Poppins",ui-sans-serif,system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:16px/1.5 "Poppins",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:var(--gold2)}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 60px}
+header.top{position:sticky;top:0;z-index:20;background:linear-gradient(105deg,#b6505b 0%,#8a4560 30%,#3a2a5a 65%,#16132c 100%);box-shadow:0 6px 24px rgba(0,0,0,.35);padding-top:env(safe-area-inset-top)}
+header.top .in{max-width:560px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--head);font-weight:800;letter-spacing:-.2px;font-size:19px;color:#fff;text-decoration:none;flex:1;min-width:0}
+.brand .logo{width:38px;height:38px;flex:none;display:grid;place-items:center;color:#fff;font-size:24px}
+.brand .logo img{width:38px;height:38px;object-fit:contain;display:block}
+.brand small{display:block;font-weight:700;color:rgba(255,255,255,.75);font-size:10px;letter-spacing:2.6px;text-transform:uppercase;margin-top:-1px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:rgba(13,11,28,.45);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:14px;font-weight:600;white-space:nowrap;max-width:46vw;overflow:hidden;text-overflow:ellipsis}
+.chip .dot{width:22px;height:22px;border-radius:50%;background:var(--gold);color:#16132c;display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.chip.coach{border-color:var(--gold2);color:var(--gold2)}
+.tabs{display:flex;gap:6px;margin:14px 0 6px;background:var(--bg2);padding:4px;border-radius:12px;border:1px solid var(--line)}
+.tabs a{flex:1;text-align:center;padding:9px 0;border-radius:9px;color:var(--muted);text-decoration:none;font-family:var(--head);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.6px}
+.tabs a.on{background:var(--card2);color:var(--text)}
+h1{font-family:var(--head);font-weight:800;font-size:30px;line-height:1.1;margin:18px 0 6px;letter-spacing:-.8px}
+h2{font-family:var(--head);font-size:12px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);margin:28px 0 12px;font-weight:700}
+.sub{color:var(--muted);margin:0 0 14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 18px;border-radius:999px;font-family:var(--head);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.4px;background:var(--card2);border:1px solid var(--line);color:var(--text);text-decoration:none}
+.btn.gold{background:var(--gold);color:#16132c;border:0;box-shadow:0 8px 22px rgba(224,150,105,.28)}
+.btn.green{background:#25d366;color:#0b2414;border:0}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--red);background:transparent;border-color:rgba(224,96,79,.35)}
+.btn.small{padding:10px 14px;font-size:13px;width:auto}
+.btn:disabled{opacity:.4;cursor:default;box-shadow:none}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+.card{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px;text-decoration:none;color:var(--text)}
+.card .mini{width:92px;height:92px;flex:none;border-radius:8px;overflow:hidden}
+.card .t{font-family:var(--head);font-weight:800;font-size:19px;letter-spacing:-.3px}
+.card .q{color:var(--muted);font-size:14px;margin:2px 0 6px}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:4px 9px;border-radius:999px;background:var(--card2);color:var(--muted)}
+.badge.go{background:rgba(224,150,105,.16);color:var(--gold2)}
+.badge.ok{background:var(--green-bg);color:var(--green)}
+.badge.ko{background:var(--red-bg);color:var(--red)}
+.empty{color:var(--faint);text-align:center;padding:28px 10px;border:1px dashed var(--line);border-radius:var(--r)}
+.boardbox{position:relative;width:100%;margin:6px 0 10px}
+.board{width:100%;aspect-ratio:1/1}
+.board.cg-wrap{border-radius:6px;overflow:hidden;box-shadow:var(--shadow)}
+.mini .board{border-radius:0;box-shadow:none}
+.turn{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;font-weight:600}
+.turn i{width:14px;height:14px;border-radius:50%;border:2px solid var(--muted);display:inline-block}
+.turn i.w{background:#fff}.turn i.b{background:#111}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+.opt{position:relative;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px 10px;font-family:var(--head);font-weight:800;font-size:22px;text-align:center;overflow:hidden}
+.opt.sel{border-color:var(--gold);background:rgba(224,150,105,.14)}
+.opt.mine{border-color:var(--gold)}
+.opt.right{border-color:var(--green);background:var(--green-bg)}
+.opt.wrong.mine{border-color:var(--red);background:var(--red-bg)}
+.opt .meta{display:block;font-family:"Poppins",sans-serif;font-size:12px;font-weight:600;color:var(--muted);margin-top:4px}
+.opt .tag{position:absolute;top:6px;right:8px;font-size:12px}
+.bar{height:6px;border-radius:3px;background:var(--line);margin-top:8px;overflow:hidden}
+.bar b{display:block;height:100%;background:var(--muted)}
+.opt.right .bar b{background:var(--green)}
+.who{font-size:12px;font-weight:600;color:var(--muted);margin-top:6px;line-height:1.35}
+.actions{margin:16px 0 8px}
+.note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0;color:var(--muted);font-size:15px}
+.note b{color:var(--text)}
+.note.ok{border-color:rgba(76,195,138,.45);background:var(--green-bg);color:#c9f0dc}
+.note.ko{border-color:rgba(215,118,128,.5);background:var(--red-bg);color:#fbeaec}
+.note.gold{border-color:rgba(224,150,105,.45);background:rgba(224,150,105,.1);color:#fbeee5}
+video,iframe.yt{width:100%;border-radius:14px;background:#000;display:block}
+iframe.yt{aspect-ratio:16/9;border:0}
+.lb{list-style:none;padding:0;margin:0}
+.lb li{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:8px}
+.lb li.me{border-color:var(--gold)}
+.lb .rk{width:30px;text-align:center;font-weight:800;color:var(--muted);font-size:18px}
+.lb .nm{flex:1;font-weight:700}
+.lb .pts{font-family:var(--head);font-weight:800;font-size:20px}
+.lb .pts small{display:block;font-size:11px;color:var(--muted);font-weight:600;text-align:right}
+.palette{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:8px 0}
+.pal{position:relative;aspect-ratio:1/1;background:var(--card);border:2px solid var(--line);border-radius:10px;display:grid;place-items:center;padding:4px}
+.pal.on{border-color:var(--gold);background:rgba(224,150,105,.18)}
+.pal piece{position:static !important;display:block;width:100% !important;height:100% !important;transform:none !important}
+.pal .ico{font-size:22px;line-height:1}
+.seg{display:flex;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.seg button{flex:1;padding:10px;border-radius:9px;font-weight:800;color:var(--muted)}
+.seg button.on{background:var(--card2);color:var(--text)}
+.field{display:block;margin:12px 0}
+.field span{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.field input,.field textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);outline:none}
+.field input:focus,.field textarea:focus{border-color:var(--gold)}
+.olist{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.oitem{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.oitem.ok{border-color:var(--green);background:var(--green-bg)}
+.oitem .san{flex:1;font-family:var(--head);font-weight:800;font-size:21px}
+.oitem button{width:42px;height:42px;border-radius:10px;background:var(--card2);font-size:20px;display:grid;place-items:center}
+.oitem.ok .star{background:var(--green);color:#08210f}
+.steps{display:flex;gap:6px;margin:14px 0 0}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--gold)}
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg2);border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:88vh;overflow:auto;padding:18px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:var(--shadow)}
+.sheet h3{margin:4px 0 4px;font-family:var(--head);font-weight:800;font-size:23px;letter-spacing:-.4px}
+.names{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.names button{padding:13px 10px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:700;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);z-index:80;background:var(--card2);border:1px solid var(--line);padding:11px 16px;border-radius:12px;font-weight:700;box-shadow:var(--shadow);max-width:92vw}
+.toast.err{border-color:var(--red);color:#ffd4cd}
+.spin{width:18px;height:18px;border:3px solid rgba(255,255,255,.25);border-top-color:currentColor;border-radius:50%;animation:sp .8s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rec{position:relative}
+.rec .live{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);padding:5px 10px;border-radius:999px;font-weight:800;font-size:14px;display:flex;gap:7px;align-items:center}
+.rec .live i{width:10px;height:10px;border-radius:50%;background:var(--red);animation:bl 1s infinite}
+@keyframes bl{50%{opacity:.25}}
+.recbtn{width:74px;height:74px;border-radius:50%;border:4px solid #fff;background:transparent;display:grid;place-items:center;margin:0 auto}
+.recbtn b{width:56px;height:56px;border-radius:50%;background:var(--red);transition:all .2s}
+.recbtn.on b{width:28px;height:28px;border-radius:6px}
+.promo{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.promo .pal{width:64px}
+.link{color:var(--muted);text-decoration:underline;font-size:14px;font-weight:600;padding:8px 0;display:inline-block}
+details summary{cursor:pointer;color:var(--muted);font-weight:700;font-size:14px;padding:8px 0}
+.loading{display:grid;place-items:center;padding:80px 0;color:var(--muted)}
+.hidden{display:none !important}
+.cg-wrap coords{font-weight:700;font-size:clamp(8px,2.4vw,11px);text-transform:lowercase}
+cg-board{background-color:#f4e9e0;background-image:conic-gradient(#d39b7a 90deg,#f4e9e0 90deg 180deg,#d39b7a 180deg 270deg,#f4e9e0 270deg) !important;background-size:25% 25% !important}
+.cg-wrap coords coord{color:#16132c !important;opacity:.7}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="#/"><span class="logo"><img src="https://caissa-bordeaux.fr/img/logo-caissa-mark-white.webp" alt="Caïssa Bordeaux" onerror="this.replaceWith('♞')"></span><span>Challenges<small>Caïssa Bordeaux</small></span></a>
+  <button id="who" class="chip"></button>
+</div></header>
+<main class="wrap" id="app"><div class="loading"><span class="spin"></span></div></main>
+<div id="layer"></div>
+
+<script type="module">
+// ================= Réglages =================
+const SUPABASE_URL = 'https://gccyhuqhgnfoqbbmddio.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_AToTLFhUYhWZsUlmM9D6jw_Oz26dg1r';
+const MAX_VIDEO = 50 * 1024 * 1024;   // limite du stockage gratuit par fichier
+const MAX_REC_SECONDS = 300;          // 5 minutes d'enregistrement maximum
+
+import { Chessground } from 'https://cdn.jsdelivr.net/npm/chessground@9.2.1/+esm';
+import { Chess } from 'https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm';
+
+// ================= Accès aux données =================
+async function makeApi() {
+  if (window.__API_MOCK__) return window.__API_MOCK__;
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/+esm');
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+  const ok = ({ data, error }) => { if (error) throw error; return data; };
+  return {
+    members: async () => ok(await sb.from('members').select('id,name,created_at').order('name')),
+    exercises: async () => ok(await sb.from('exercises').select('*').order('num', { ascending: false })),
+    answers: async () => ok(await sb.from('answers').select('exercise_id,member_id,choice,created_at')),
+    addMember: async (name) => ok(await sb.from('members').insert({ name }).select('id,name,created_at').single()),
+    answer: async (exercise_id, member_id, choice) => ok(await sb.from('answers').insert({ exercise_id, member_id, choice })),
+    coachOk: async (key) => ok(await sb.rpc('coach_ok', { p_key: key })),
+    createExercise: async (key, e) => ok(await sb.rpc('create_exercise', { p_key: key, p_num: e.num, p_fen: e.fen, p_question: e.question, p_options: e.options, p_correct: e.correct })),
+    solution: async (key, id) => ok(await sb.rpc('coach_solution', { p_key: key, p_exercise: id })),
+    reveal: async (key, id, video_url, comment) => ok(await sb.rpc('reveal_exercise', { p_key: key, p_exercise: id, p_video_url: video_url, p_comment: comment })),
+    deleteExercise: async (key, id) => ok(await sb.rpc('delete_exercise', { p_key: key, p_exercise: id })),
+    deleteMember: async (key, id) => ok(await sb.rpc('delete_member', { p_key: key, p_member: id })),
+    uploadVideo: async (blob, name) => {
+      const type = (blob.type || 'video/mp4').split(';')[0];
+      ok(await sb.storage.from('videos').upload(name, blob, { contentType: type, upsert: false }));
+      return sb.storage.from('videos').getPublicUrl(name).data.publicUrl;
+    },
+  };
+}
+
+// ================= Petits outils =================
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem('caissa.' + k)); } catch { return null; } },
+  set(k, v) { try { v == null ? localStorage.removeItem('caissa.' + k) : localStorage.setItem('caissa.' + k, JSON.stringify(v)); } catch {} },
+};
+const FR = { N: 'C', B: 'F', R: 'T', Q: 'D', K: 'R' };
+const frSan = (san) => san.replace(/[NBRQK]/g, c => FR[c]);
+const turnOf = (fen) => (fen.split(' ')[1] === 'b' ? 'black' : 'white');
+function moveLabel(fen, san) {
+  const parts = fen.split(' ');
+  const n = parseInt(parts[5] || '1', 10) || 1;
+  return `${n}${parts[1] === 'b' ? '...' : '.'}${frSan(san)}`;
+}
+const initials = (n) => n.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+function toast(msg, err) {
+  const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), err ? 4200 : 2400);
+}
+function errMsg(e) {
+  const m = (e && (e.message || e.error_description || e.error)) || String(e);
+  if (/not_coach/.test(m)) return "Lien coach invalide.";
+  if (/answers_exercise_id_member_id_key|duplicate key.*answers/.test(m)) return 'Tu as déjà répondu à cet exo.';
+  if (/members_name_uniq/.test(m)) return 'Ce prénom existe déjà : choisis-le dans la liste.';
+  if (/row-level security.*answers/.test(m)) return 'Trop tard : la correction est publiée.';
+  if (/exercises_num_key/.test(m)) return 'Ce numéro d’exo existe déjà.';
+  if (/Failed to fetch|NetworkError|Load failed/i.test(m)) return 'Pas de connexion. Réessaie dans un instant.';
+  return m;
+}
+const base = () => location.origin + location.pathname;
+const exoLink = (num) => `${base()}#/exo/${num}`;
+const waLink = (text) => `https://wa.me/?text=${encodeURIComponent(text)}`;
+
+// ================= État =================
+const S = { api: null, members: [], exercises: [], answers: [], sol: {}, boards: [], coach: store.get('coach'), meId: store.get('me') };
+const me = () => S.members.find(m => m.id === S.meId) || null;
+const exoByNum = (n) => S.exercises.find(e => String(e.num) === String(n));
+const answersOf = (exId) => S.answers.filter(a => a.exercise_id === exId);
+const myAnswer = (exId) => S.answers.find(a => a.exercise_id === exId && a.member_id === S.meId);
+const memberName = (id) => (S.members.find(m => m.id === id) || {}).name || '?';
+
+async function loadAll() {
+  const [members, exercises, answers] = await Promise.all([S.api.members(), S.api.exercises(), S.api.answers()]);
+  S.members = members; S.exercises = exercises; S.answers = answers;
+  if (S.meId && S.members.length && !me()) { S.meId = null; store.set('me', null); }
+}
+async function loadSolution(ex) {
+  if (!S.coach || ex.status === 'revealed') return ex.correct || [];
+  if (!S.sol[ex.id]) S.sol[ex.id] = await S.api.solution(S.coach, ex.id);
+  return S.sol[ex.id] || [];
+}
+
+// ================= Échiquiers =================
+function clearBoards() { S.boards.forEach(b => { try { b.destroy(); } catch {} }); S.boards = []; }
+function mountBoard(el, cfg) { const cg = Chessground(el, cfg); S.boards.push(cg); return cg; }
+function uciShape(uci, brush = 'green') { return { orig: uci.slice(0, 2), dest: uci.slice(2, 4), brush }; }
+function viewBoard(el, fen, extra = {}) {
+  return mountBoard(el, { fen: fen.split(' ')[0], orientation: turnOf(fen), viewOnly: true, coordinates: true, drawable: { enabled: false, visible: true }, ...extra });
+}
+
+// ================= Header =================
+function renderWho() {
+  const b = $('#who'); const m = me();
+  if (S.coach) { b.className = 'chip coach'; b.innerHTML = '★ Coach'; }
+  else if (m) { b.className = 'chip'; b.innerHTML = `<span class="dot">${esc(initials(m.name))}</span>${esc(m.name)}`; }
+  else { b.className = 'chip'; b.innerHTML = 'Qui es-tu ?'; }
+}
+$('#who').addEventListener('click', () => {
+  if (!S.coach && !me()) return pickIdentity();
+  openSheet(`
+    <h3>${S.coach ? 'Mode coach' : esc(me().name)}</h3>
+    <p class="sub">${S.coach ? 'Tu crées les exos et publies les corrections.' : 'C’est bien toi qui joues sur ce téléphone.'}</p>
+    ${S.coach ? `<button class="btn" data-a="members">Gérer les joueurs</button><div style="height:8px"></div><button class="btn ghost" data-a="quitcoach">Quitter le mode coach</button>` : `<button class="btn" data-a="switch">Changer de joueur</button>`}
+    <div style="height:8px"></div><button class="btn ghost" data-a="close">Fermer</button>`, (a) => {
+    if (a === 'switch') { closeSheet(); pickIdentity(); }
+    if (a === 'quitcoach') { S.coach = null; store.set('coach', null); closeSheet(); renderWho(); route(); }
+    if (a === 'members') { closeSheet(); location.hash = '#/joueurs'; }
+    if (a === 'close') closeSheet();
+  });
+});
+
+// ================= Feuilles (modales) =================
+function openSheet(html, onAction) {
+  const L = $('#layer');
+  L.innerHTML = `<div class="overlay"><div class="sheet">${html}</div></div>`;
+  const ov = $('.overlay', L);
+  ov.addEventListener('click', (e) => {
+    if (e.target === ov) return closeSheet();
+    const t = e.target.closest('[data-a]'); if (t && onAction) onAction(t.dataset.a, t);
+  });
+  return ov;
+}
+function closeSheet() { $('#layer').innerHTML = ''; }
+
+function pickIdentity(after) {
+  const list = [...S.members].sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+  const ov = openSheet(`
+    <h3>Qui es-tu ?</h3>
+    <p class="sub">Touche ton prénom. C'est tout, le téléphone s'en souviendra.</p>
+    ${list.length > 8 ? '<label class="field"><input id="q" placeholder="Chercher un prénom" autocomplete="off"></label>' : ''}
+    <div class="names" id="names">${list.map(m => `<button data-a="pick" data-id="${m.id}">${esc(m.name)}</button>`).join('')}</div>
+    <div id="addbox">
+      <button class="btn ghost" data-a="new">Je ne suis pas dans la liste</button>
+    </div>`, async (a, t) => {
+    if (a === 'pick') { setMe(t.dataset.id); closeSheet(); after && after(); }
+    if (a === 'new') {
+      $('#addbox').innerHTML = `<label class="field"><span>Ton prénom (et l'initiale du nom si besoin)</span><input id="newname" maxlength="40" placeholder="Ex. Paul D." autocomplete="off"></label><button class="btn gold" data-a="add">C'est moi</button>`;
+      $('#newname').focus();
+    }
+    if (a === 'add') {
+      const name = $('#newname').value.trim().replace(/\s+/g, ' ');
+      if (!name) return;
+      const exists = S.members.find(m => m.name.toLowerCase() === name.toLowerCase());
+      if (exists) { setMe(exists.id); closeSheet(); after && after(); return; }
+      t.disabled = true; t.innerHTML = '<span class="spin"></span>';
+      try { const m = await S.api.addMember(name); S.members.push(m); setMe(m.id); closeSheet(); toast(`Bienvenue ${m.name} !`); after && after(); }
+      catch (e) { toast(errMsg(e), true); t.disabled = false; t.textContent = "C'est moi"; }
+    }
+  });
+  const q = $('#q', ov);
+  if (q) q.addEventListener('input', () => {
+    const v = q.value.trim().toLowerCase();
+    $$('#names button', ov).forEach(b => b.classList.toggle('hidden', v && !b.textContent.toLowerCase().includes(v)));
+  });
+}
+function setMe(id) { S.meId = id; store.set('me', id); renderWho(); route(); }
+
+// ================= Routage =================
+let pollTimer = null;
+async function route() {
+  clearBoards(); clearInterval(pollTimer); stopCamera();
+  const h = location.hash.replace(/^#\/?/, '');
+  const [p, a, b] = h.split('/');
+  window.scrollTo(0, 0);
+  if (p === 'coach' && a) return enterCoach(a);
+  if (p === 'exo' && a && b === 'correction') return viewReveal(a);
+  if (p === 'exo' && a) return viewExo(a);
+  if (p === 'nouveau') return viewEditor();
+  if (p === 'classement') return viewBoardTable();
+  if (p === 'joueurs') return viewMembers();
+  return viewHome();
+}
+window.addEventListener('hashchange', route);
+const softViews = () => /^#?\/?(exo\/\d+)?$|^#\/classement$|^#\/$/.test(location.hash) || location.hash === '';
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible' && softViews() && !$('#layer').innerHTML) { try { await loadAll(); route(); } catch {} }
+});
+function poll(ms = 25000) {
+  pollTimer = setInterval(async () => {
+    if (document.visibilityState !== 'visible' || $('#layer').innerHTML) return;
+    const before = JSON.stringify([S.exercises.map(e => e.status), S.answers.length]);
+    try { await loadAll(); } catch { return; }
+    if (JSON.stringify([S.exercises.map(e => e.status), S.answers.length]) !== before) route();
+  }, ms);
+}
+
+async function enterCoach(key) {
+  try {
+    const ok = await S.api.coachOk(key);
+    if (ok) { S.coach = key; store.set('coach', key); toast('Mode coach activé ★'); }
+    else toast('Lien coach invalide', true);
+  } catch (e) { toast(errMsg(e), true); }
+  renderWho();
+  history.replaceState(null, '', '#/'); route();
+}
+
+// ================= Accueil =================
+function tabs(on) {
+  return `<nav class="tabs"><a href="#/" class="${on === 'exos' ? 'on' : ''}">Exos</a><a href="#/classement" class="${on === 'lb' ? 'on' : ''}">Classement</a></nav>`;
+}
+function exoCard(ex, status) {
+  return `<a class="card" href="#/exo/${ex.num}">
+    <div class="mini"><div class="board" data-fen="${esc(ex.fen)}"></div></div>
+    <div style="min-width:0"><div class="t">Challenge ${ex.num}</div><div class="q">${esc(ex.question || '')}</div>${status}</div>
+  </a>`;
+}
+function viewHome() {
+  const m = me(); const coach = !!S.coach;
+  const open = S.exercises.filter(e => e.status === 'open');
+  const done = S.exercises.filter(e => e.status === 'revealed');
+  const todo = open.filter(e => coach || !myAnswer(e.id));
+  const waiting = coach ? [] : open.filter(e => myAnswer(e.id));
+  let html = tabs('exos');
+  if (coach) html += `<div style="margin-top:14px"><a class="btn gold" href="#/nouveau">＋ Nouvel exo</a></div>`;
+  if (!coach && !m && S.exercises.length) html += `<div class="note gold">👋 <b>Touche « Qui es-tu ? » en haut</b> pour répondre et suivre ton score.</div>`;
+  html += `<h2>${coach ? 'En cours' : 'À toi de jouer'}</h2>`;
+  html += todo.length ? todo.map(e => {
+    const n = answersOf(e.id).length;
+    return exoCard(e, coach ? `<span class="badge go">${n} réponse${n > 1 ? 's' : ''} · corriger</span>` : `<span class="badge go">À jouer</span>`);
+  }).join('') : `<div class="empty">${coach ? 'Aucun exo en cours. Crée le prochain !' : 'Rien en attente. Le prochain exo arrive bientôt.'}</div>`;
+  if (waiting.length) {
+    html += `<h2>En attente de la correction</h2>` + waiting.map(e => {
+      const a = myAnswer(e.id); const o = e.options[a.choice];
+      return exoCard(e, `<span class="badge">Ta réponse : ${esc(o ? moveLabel(e.fen, o.san) : '?')}</span>`);
+    }).join('');
+  }
+  if (done.length) {
+    html += `<h2>Corrigés</h2>` + done.map(e => {
+      const a = !coach && myAnswer(e.id); const good = e.options.filter((_, i) => (e.correct || []).includes(i)).map(o => moveLabel(e.fen, o.san)).join(' ou ');
+      let badge = `<span class="badge">Solution : ${esc(good)}</span>`;
+      if (a) badge = (e.correct || []).includes(a.choice) ? `<span class="badge ok">✓ Trouvé</span>` : `<span class="badge ko">✗ C'était ${esc(good)}</span>`;
+      if (e.video_url) badge += ` <span class="badge">▶ vidéo</span>`;
+      return exoCard(e, badge);
+    }).join('');
+  }
+  $('#app').innerHTML = html;
+  $$('.mini .board').forEach(el => viewBoard(el, el.dataset.fen, { coordinates: false }));
+  poll();
+}
+
+// ================= Classement =================
+function scores() {
+  const revealed = S.exercises.filter(e => e.status === 'revealed');
+  const ids = new Set(revealed.map(e => e.id));
+  const by = {};
+  for (const a of S.answers) {
+    if (!ids.has(a.exercise_id)) continue;
+    const e = revealed.find(x => x.id === a.exercise_id);
+    const r = by[a.member_id] ||= { id: a.member_id, pts: 0, played: 0 };
+    r.played++; if ((e.correct || []).includes(a.choice)) r.pts++;
+  }
+  return { rows: Object.values(by).sort((x, y) => y.pts - x.pts || x.played - y.played || memberName(x.id).localeCompare(memberName(y.id), 'fr')), total: revealed.length };
+}
+function viewBoardTable() {
+  const { rows, total } = scores();
+  let html = tabs('lb') + `<h1>Classement</h1><p class="sub">1 point par bonne réponse · ${total} exo${total > 1 ? 's' : ''} corrigé${total > 1 ? 's' : ''}</p>`;
+  if (!rows.length) html += `<div class="empty">Le classement s'affiche dès la première correction publiée.</div>`;
+  else {
+    let rank = 0, prev = null;
+    html += `<ul class="lb">` + rows.map((r, i) => {
+      if (prev === null || r.pts !== prev) { rank = i + 1; prev = r.pts; }
+      const medal = (r.pts > 0 && { 1: '🥇', 2: '🥈', 3: '🥉' }[rank]) || rank;
+      return `<li class="${r.id === S.meId ? 'me' : ''}"><span class="rk">${medal}</span><span class="nm">${esc(memberName(r.id))}</span><span class="pts">${r.pts}<small>sur ${r.played}</small></span></li>`;
+    }).join('') + `</ul>`;
+  }
+  $('#app').innerHTML = html;
+  poll();
+}
+
+// ================= Exo (membres et coach) =================
+async function viewExo(num) {
+  const ex = exoByNum(num);
+  if (!ex) { $('#app').innerHTML = `<h1>Exo introuvable</h1><p class="sub">Il a peut-être été supprimé.</p><a class="btn" href="#/">Retour aux exos</a>`; return; }
+  const coach = !!S.coach; const revealed = ex.status === 'revealed';
+  const correct = revealed ? (ex.correct || []) : (coach ? await loadSolution(ex) : []);
+  const answers = answersOf(ex.id); const mine = myAnswer(ex.id);
+  const total = answers.length;
+  const showStats = revealed || coach;
+  let sel = null;
+
+  let html = `<a class="link" href="#/">← Exos</a><h1>Challenge ${ex.num}</h1><p class="sub">${esc(ex.question || '')}</p>
+    <div class="boardbox"><div class="board" id="b"></div></div>
+    <div class="turn"><i class="${turnOf(ex.fen) === 'white' ? 'w' : 'b'}"></i>Trait aux ${turnOf(ex.fen) === 'white' ? 'Blancs' : 'Noirs'}</div>
+    <div class="opts">` + ex.options.map((o, i) => {
+      const cnt = answers.filter(a => a.choice === i).length; const pct = total ? Math.round(cnt * 100 / total) : 0;
+      const isRight = correct.includes(i); const isMine = mine && mine.choice === i;
+      const cls = ['opt', showStats && isRight ? 'right' : '', showStats && !isRight ? 'wrong' : '', isMine ? 'mine' : ''].join(' ');
+      const names = answers.filter(a => a.choice === i).map(a => memberName(a.member_id));
+      return `<button class="${cls}" data-i="${i}" ${(mine || revealed || coach) ? 'data-locked="1"' : ''}>
+        ${showStats && isRight ? '<span class="tag">✓</span>' : ''}${esc(moveLabel(ex.fen, o.san))}
+        ${isMine ? '<span class="meta">ta réponse</span>' : ''}
+        ${showStats ? `<div class="bar"><b style="width:${pct}%"></b></div><span class="meta">${cnt} · ${pct}%</span>${names.length ? `<div class="who">${names.map(esc).join(', ')}</div>` : ''}` : ''}
+      </button>`;
+    }).join('') + `</div>`;
+
+  if (revealed) {
+    if (mine) html += correct.includes(mine.choice) ? `<div class="note ok">🎉 <b>Bien joué !</b> Tu as trouvé.</div>` : `<div class="note ko"><b>Raté cette fois.</b> Regarde la correction ci-dessous.</div>`;
+    if (ex.video_url) html += `<h2>La correction</h2>` + videoEmbed(ex.video_url);
+    if (ex.comment) html += `<div class="note">${esc(ex.comment).replace(/\n/g, '<br>')}</div>`;
+    if (!ex.video_url && !ex.comment) html += `<div class="note">Correction publiée.</div>`;
+    if (coach) html += `<div style="height:14px"></div><a class="btn" href="#/exo/${ex.num}/correction">Modifier la correction</a>`;
+  } else if (coach) {
+    html += `<div class="note gold"><b>${total} réponse${total > 1 ? 's' : ''}</b> pour l'instant. Toi seul vois les choix avant la correction.</div>
+      <a class="btn green" href="${waLink(`♞ Challenge Caïssa ${ex.num} : ${ex.question}\nRéponds ici 👉 ${exoLink(ex.num)}`)}" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+      <div class="actions"><a class="btn gold" href="#/exo/${ex.num}/correction">Publier la correction</a></div>`;
+  } else if (mine) {
+    html += `<div class="note"><b>Réponse enregistrée.</b> Résultat dès que le coach publie la correction. ${total > 1 ? `${total} joueurs ont déjà répondu.` : ''}</div>`;
+  } else {
+    html += `<p class="sub" style="text-align:center">Touche un coup puis valide. ${total ? `${total} joueur${total > 1 ? 's ont' : ' a'} déjà répondu.` : ''}</p>
+      <div class="actions"><button class="btn gold" id="go" disabled>Choisis un coup</button></div>`;
+  }
+  if (coach) html += `<div style="height:22px"></div><button class="btn danger" id="del">Supprimer cet exo</button>`;
+  $('#app').innerHTML = html;
+
+  const shapes = showStats ? correct.map(i => uciShape(ex.options[i].uci, 'green')) : (mine ? [uciShape(ex.options[mine.choice].uci, 'yellow')] : []);
+  const cg = viewBoard($('#b'), ex.fen, { drawable: { enabled: false, visible: true, autoShapes: shapes } });
+
+  $$('.opt').forEach(btn => btn.addEventListener('click', () => {
+    const i = +btn.dataset.i;
+    if (btn.dataset.locked) { cg.setAutoShapes([uciShape(ex.options[i].uci, correct.includes(i) ? 'green' : (showStats ? 'red' : 'yellow'))]); return; }
+    sel = i; $$('.opt').forEach(b => b.classList.toggle('sel', b === btn));
+    cg.setAutoShapes([uciShape(ex.options[i].uci, 'yellow')]);
+    const go = $('#go'); go.disabled = false; go.textContent = `Valider ${moveLabel(ex.fen, ex.options[i].san)}`;
+  }));
+  const go = $('#go');
+  if (go) go.addEventListener('click', async () => {
+    if (sel === null) return;
+    const submit = async () => {
+      go.disabled = true; go.innerHTML = '<span class="spin"></span>';
+      try { await S.api.answer(ex.id, S.meId, sel); await loadAll(); toast('Réponse enregistrée ✓'); route(); }
+      catch (e) { toast(errMsg(e), true); try { await loadAll(); } catch {} route(); }
+    };
+    if (!me()) return pickIdentity(submit);
+    submit();
+  });
+  const del = $('#del');
+  if (del) del.addEventListener('click', () => openSheet(`<h3>Supprimer le challenge ${ex.num} ?</h3><p class="sub">Les réponses des joueurs seront effacées aussi.</p><button class="btn danger" data-a="yes">Oui, supprimer</button><div style="height:8px"></div><button class="btn ghost" data-a="no">Annuler</button>`, async (a, t) => {
+    if (a === 'no') return closeSheet();
+    t.disabled = true;
+    try { await S.api.deleteExercise(S.coach, ex.id); await loadAll(); closeSheet(); toast('Exo supprimé'); location.hash = '#/'; }
+    catch (e) { closeSheet(); toast(errMsg(e), true); }
+  }));
+  poll(20000);
+}
+function ytId(url) {
+  const m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/))([\w-]{6,})/);
+  return m && m[1];
+}
+function videoEmbed(url) {
+  const id = ytId(url);
+  if (id) return `<iframe class="yt" src="https://www.youtube.com/embed/${id}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>`;
+  return `<video src="${esc(url)}" controls playsinline preload="metadata"></video>`;
+}
+
+// ================= Création d'un exo (coach) =================
+const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+const ROLES = { k: 'king', q: 'queen', r: 'rook', b: 'bishop', n: 'knight', p: 'pawn' };
+function draft() {
+  return store.get('draft') || { step: 1, placement: START, turn: 'w', options: [], correct: [], question: '', num: null };
+}
+function saveDraft(d) { store.set('draft', d); }
+function castling(placement) {
+  const rows = placement.split('/');
+  const sq = (file, rank) => { // file 0..7, rank 1..8
+    let row = rows[8 - rank], f = 0;
+    for (const c of row) { if (/\d/.test(c)) f += +c; else { if (f === file) return c; f++; } if (f > file) break; }
+    return null;
+  };
+  let c = '';
+  if (sq(4, 1) === 'K') { if (sq(7, 1) === 'R') c += 'K'; if (sq(0, 1) === 'R') c += 'Q'; }
+  if (sq(4, 8) === 'k') { if (sq(7, 8) === 'r') c += 'k'; if (sq(0, 8) === 'r') c += 'q'; }
+  return c || '-';
+}
+const fullFen = (d) => `${d.placement} ${d.turn} ${castling(d.placement)} - 0 1`;
+function checkPosition(d) {
+  const p = d.placement;
+  const count = (ch) => p.split('').filter(c => c === ch).length;
+  if (count('K') !== 1 || count('k') !== 1) return 'Il faut exactement un roi blanc et un roi noir.';
+  const rows = p.split('/');
+  if (/[pP]/.test(rows[0]) || /[pP]/.test(rows[7])) return 'Un pion ne peut pas être sur la première ou la dernière rangée.';
+  let ch;
+  try { ch = new Chess(fullFen(d)); } catch (e) { return 'Position impossible : ' + (e.message || e); }
+  const other = d.turn === 'w' ? 'b' : 'w';
+  const kingSq = ch.board().flat().find(x => x && x.type === 'k' && x.color === other)?.square;
+  if (kingSq && ch.isAttacked(kingSq, d.turn)) return `Le roi ${other === 'w' ? 'blanc' : 'noir'} est en échec alors que ce n'est pas son tour : vérifie le trait.`;
+  if (!ch.moves().length) return 'Aucun coup possible dans cette position (mat ou pat).';
+  return null;
+}
+function parsePasted(txt) {
+  let s = txt.trim();
+  const m = s.match(/lichess\.org\/(?:editor|analysis)(?:\/standard)?\/([^?#]+)/);
+  if (m) s = decodeURIComponent(m[1]).replace(/_/g, ' ');
+  const parts = s.split(/\s+/);
+  if (!/^([pnbrqkPNBRQK1-8]+\/){7}[pnbrqkPNBRQK1-8]+$/.test(parts[0])) return null;
+  return { placement: parts[0], turn: parts[1] === 'b' ? 'b' : 'w' };
+}
+
+function viewEditor() {
+  if (!S.coach) { location.hash = '#/'; return; }
+  const d = draft();
+  if (d.num == null) d.num = (S.exercises.reduce((m, e) => Math.max(m, e.num), 0) || 0) + 1;
+  d.step === 2 ? editorMoves(d) : editorPosition(d);
+}
+function stepsBar(n) { return `<div class="steps">${[1, 2, 3].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</div>`; }
+
+function editorPosition(d) {
+  const pal = (color) => ['k', 'q', 'r', 'b', 'n', 'p'].map(r => `<button class="pal cg-wrap" data-tool="${color}${r}"><piece class="${ROLES[r]} ${color === 'w' ? 'white' : 'black'}"></piece></button>`).join('');
+  $('#app').innerHTML = `${stepsBar(1)}<a class="link" href="#/">← Annuler</a>
+    <h1>La position</h1><p class="sub">Touche une pièce ci-dessous puis les cases où la poser. Main ✋ : déplacer (glisse hors de l'échiquier pour retirer).</p>
+    <div class="palette">${pal('w')}<button class="pal" data-tool="hand"><span class="ico">✋</span></button>${pal('b')}<button class="pal" data-tool="erase"><span class="ico">🧽</span></button></div>
+    <div class="boardbox"><div class="board" id="b"></div></div>
+    <div class="row" style="margin-bottom:12px"><button class="btn small" id="start">Départ</button><button class="btn small" id="clear">Vider</button><button class="btn small" id="flip">↻ Tourner</button></div>
+    <div class="seg" id="turn"><button data-t="w">Trait aux Blancs</button><button data-t="b">Trait aux Noirs</button></div>
+    <details style="margin-top:10px"><summary>Coller une position (lien lichess ou FEN)</summary>
+      <label class="field"><input id="paste" placeholder="https://lichess.org/editor/... ou FEN"></label><button class="btn small" id="pasteok">Utiliser</button></details>
+    <div class="actions"><button class="btn gold" id="next">Suivant : les coups proposés →</button></div>`;
+  let tool = 'hand'; let orientation = store.get('editorOrient') || 'white';
+  const el = $('#b');
+  const cg = mountBoard(el, {
+    fen: d.placement, orientation, coordinates: true, autoCastle: false,
+    movable: { free: true, color: 'both', showDests: false }, premovable: { enabled: false },
+    draggable: { enabled: true, deleteOnDropOff: true }, highlight: { lastMove: false, check: false },
+    animation: { enabled: true, duration: 120 },
+    events: { change: () => { d.placement = cg.getFen(); saveDraft(d); } },
+  });
+  const setTool = (t) => {
+    tool = t;
+    $$('.palette .pal').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
+    const hand = t === 'hand';
+    cg.set({ movable: { free: hand, color: hand ? 'both' : undefined }, draggable: { enabled: hand }, selectable: { enabled: hand } });
+    cg.selectSquare(null);
+  };
+  setTool('hand');
+  $$('.palette .pal').forEach(b => b.addEventListener('click', () => setTool(tool === b.dataset.tool ? 'hand' : b.dataset.tool)));
+  el.addEventListener('pointerdown', (e) => {
+    if (tool === 'hand') return;
+    const key = cg.getKeyAtDomPos([e.clientX, e.clientY]); if (!key) return;
+    e.preventDefault(); e.stopPropagation();
+    const cur = cg.state.pieces.get(key);
+    if (tool === 'erase') { cg.setPieces(new Map([[key, undefined]])); }
+    else {
+      const color = tool[0] === 'w' ? 'white' : 'black'; const role = ROLES[tool[1]];
+      const same = cur && cur.color === color && cur.role === role;
+      cg.setPieces(new Map([[key, same ? undefined : { color, role }]]));
+    }
+    d.placement = cg.getFen(); saveDraft(d);
+  }, true);
+  const turnBtns = () => $$('#turn button').forEach(b => b.classList.toggle('on', b.dataset.t === d.turn));
+  turnBtns();
+  $$('#turn button').forEach(b => b.addEventListener('click', () => {
+    d.turn = b.dataset.t; saveDraft(d); turnBtns();
+    orientation = d.turn === 'w' ? 'white' : 'black'; store.set('editorOrient', orientation); cg.set({ orientation });
+  }));
+  $('#start').onclick = () => { cg.set({ fen: START }); d.placement = START; saveDraft(d); };
+  $('#clear').onclick = () => { cg.set({ fen: '8/8/8/8/8/8/8/8' }); d.placement = cg.getFen(); saveDraft(d); };
+  $('#flip').onclick = () => { cg.toggleOrientation(); orientation = cg.state.orientation; store.set('editorOrient', orientation); };
+  $('#pasteok').onclick = () => {
+    const r = parsePasted($('#paste').value);
+    if (!r) return toast('Je ne reconnais pas cette position.', true);
+    d.placement = r.placement; d.turn = r.turn; saveDraft(d);
+    orientation = d.turn === 'w' ? 'white' : 'black'; store.set('editorOrient', orientation);
+    cg.set({ fen: d.placement, orientation }); turnBtns(); toast('Position chargée');
+  };
+  $('#next').onclick = () => {
+    d.placement = cg.getFen();
+    const err = checkPosition(d); if (err) return toast(err, true);
+    if (d.fenUsed && d.fenUsed !== fullFen(d)) { d.options = []; d.correct = []; }
+    d.fenUsed = fullFen(d);
+    if (!d.question) d.question = `Que jouent les ${d.turn === 'w' ? 'Blancs' : 'Noirs'} ?`;
+    if (/^Que jouent les (Blancs|Noirs) \?$/.test(d.question)) d.question = `Que jouent les ${d.turn === 'w' ? 'Blancs' : 'Noirs'} ?`;
+    d.step = 2; saveDraft(d); clearBoards(); viewEditor(); window.scrollTo(0, 0);
+  };
+}
+
+function editorMoves(d) {
+  const fen = fullFen(d);
+  const chess = new Chess(fen);
+  const color = d.turn === 'w' ? 'white' : 'black';
+  const dests = () => { const m = new Map(); for (const mv of chess.moves({ verbose: true })) { if (!m.has(mv.from)) m.set(mv.from, []); m.get(mv.from).push(mv.to); } return m; };
+  $('#app').innerHTML = `${stepsBar(2)}<a class="link" id="back" href="javascript:void 0">← Modifier la position</a>
+    <h1>Les coups proposés</h1><p class="sub">Joue sur l'échiquier chaque coup à proposer. Touche ★ sur le bon (plusieurs possibles).</p>
+    <div class="boardbox"><div class="board" id="b"></div></div>
+    <div class="olist" id="olist"></div>
+    <label class="field"><span>Question</span><input id="question" maxlength="120"></label>
+    <label class="field"><span>Numéro du challenge</span><input id="num" type="number" inputmode="numeric" min="1"></label>
+    <div class="actions"><button class="btn gold" id="pub">Publier l'exo</button></div>`;
+  $('#question').value = d.question; $('#num').value = d.num;
+  $('#question').oninput = (e) => { d.question = e.target.value; saveDraft(d); };
+  $('#num').oninput = (e) => { d.num = parseInt(e.target.value, 10) || null; saveDraft(d); };
+  const cg = mountBoard($('#b'), {
+    fen: d.placement, orientation: color, turnColor: color, coordinates: true,
+    movable: { free: false, color, dests: dests(), showDests: true, events: { after: (orig, dest) => onMove(orig, dest) } },
+    premovable: { enabled: false }, highlight: { lastMove: true, check: true }, draggable: { enabled: true },
+  });
+  const reset = () => setTimeout(() => cg.set({ fen: d.placement, turnColor: color, lastMove: undefined, movable: { color, dests: dests() } }), 450);
+  const add = (from, to, promotion) => {
+    const mv = chess.move({ from, to, promotion }); chess.undo();
+    if (!mv) return reset();
+    const uci = from + to + (promotion || '');
+    if (d.options.some(o => o.uci === uci)) { toast('Ce coup est déjà proposé'); return reset(); }
+    if (d.options.length >= 8) { toast('8 coups maximum', true); return reset(); }
+    d.options.push({ san: mv.san, uci }); saveDraft(d); renderList(); reset();
+  };
+  const onMove = (orig, dest) => {
+    const p = chess.get(orig);
+    if (p && p.type === 'p' && (dest[1] === '8' || dest[1] === '1')) {
+      openSheet(`<h3>Promotion</h3><div class="promo">${['q', 'r', 'b', 'n'].map(r => `<button class="pal cg-wrap" data-a="${r}"><piece class="${ROLES[r]} ${color}"></piece></button>`).join('')}</div><button class="btn ghost" data-a="x">Annuler</button>`, (a) => {
+        closeSheet(); if (a === 'x') return reset(); add(orig, dest, a);
+      });
+    } else add(orig, dest);
+  };
+  const renderList = () => {
+    const L = $('#olist');
+    L.innerHTML = d.options.length ? d.options.map((o, i) => `<div class="oitem ${d.correct.includes(i) ? 'ok' : ''}"><span class="san">${esc(moveLabel(fen, o.san))}</span><button class="star" data-i="${i}" aria-label="Bon coup">★</button><button class="rm" data-i="${i}" aria-label="Retirer">✕</button></div>`).join('')
+      : `<div class="empty">Aucun coup pour l'instant. Joue-les sur l'échiquier.</div>`;
+    $$('.star', L).forEach(b => b.onclick = () => { const i = +b.dataset.i; d.correct = d.correct.includes(i) ? d.correct.filter(x => x !== i) : [...d.correct, i]; saveDraft(d); renderList(); });
+    $$('.rm', L).forEach(b => b.onclick = () => { const i = +b.dataset.i; d.options.splice(i, 1); d.correct = d.correct.filter(x => x !== i).map(x => x > i ? x - 1 : x); saveDraft(d); renderList(); });
+    const pub = $('#pub');
+    const ready = d.options.length >= 2 && d.correct.length >= 1;
+    pub.disabled = !ready;
+    pub.textContent = d.options.length < 2 ? `Propose au moins 2 coups` : (!d.correct.length ? 'Touche ★ sur le bon coup' : `Publier l'exo`);
+    cg.setAutoShapes(d.options.map((o, i) => uciShape(o.uci, d.correct.includes(i) ? 'green' : 'paleBlue')));
+  };
+  renderList();
+  $('#back').onclick = () => { d.step = 1; saveDraft(d); clearBoards(); viewEditor(); };
+  $('#pub').onclick = async () => {
+    const b = $('#pub');
+    if (!d.num || d.num < 1) return toast('Indique un numéro de challenge.', true);
+    if (S.exercises.some(e => e.num === d.num)) return toast(`Le challenge ${d.num} existe déjà : change le numéro.`, true);
+    b.disabled = true; b.innerHTML = '<span class="spin"></span> Publication…';
+    try {
+      await S.api.createExercise(S.coach, { num: d.num, fen, question: (d.question || '').trim(), options: d.options, correct: d.correct });
+      const num = d.num; store.set('draft', null); await loadAll(); shareScreen(num);
+    } catch (e) { toast(errMsg(e), true); b.disabled = false; b.textContent = "Publier l'exo"; }
+  };
+}
+function shareScreen(num) {
+  clearBoards();
+  const ex = exoByNum(num);
+  $('#app').innerHTML = `${stepsBar(3)}<h1>Challenge ${num} publié 🎉</h1><p class="sub">Envoie le lien au groupe du club.</p>
+    <div class="boardbox" style="max-width:260px;margin:10px auto 18px"><div class="board" id="b"></div></div>
+    <a class="btn green" href="${waLink(`♞ Challenge Caïssa ${num} : ${ex.question}\nRéponds ici 👉 ${exoLink(num)}`)}" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+    <div style="height:10px"></div><button class="btn" id="copy">Copier le lien</button>
+    <div style="height:10px"></div><a class="btn ghost" href="#/exo/${num}">Voir l'exo</a>`;
+  viewBoard($('#b'), ex.fen, { coordinates: false });
+  $('#copy').onclick = async () => { try { await navigator.clipboard.writeText(exoLink(num)); toast('Lien copié'); } catch { prompt('Copie ce lien :', exoLink(num)); } };
+}
+
+// ================= Correction (coach) =================
+let camStream = null, recorder = null, recTimer = null;
+function stopCamera() {
+  try { if (recorder && recorder.state !== 'inactive') recorder.stop(); } catch {}
+  recorder = null; clearInterval(recTimer);
+  if (camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+}
+function pickMime() {
+  if (!window.MediaRecorder) return null;
+  return ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp8,opus', 'video/webm'].find(t => { try { return MediaRecorder.isTypeSupported(t); } catch { return false; } }) || '';
+}
+const mb = (n) => (n / 1024 / 1024).toFixed(1).replace('.', ',') + ' Mo';
+
+async function viewReveal(num) {
+  if (!S.coach) { location.hash = `#/exo/${num}`; return; }
+  const ex = exoByNum(num); if (!ex) { location.hash = '#/'; return; }
+  const correct = await loadSolution(ex);
+  const good = correct.map(i => moveLabel(ex.fen, ex.options[i].san)).join(' ou ');
+  const total = answersOf(ex.id).length;
+  const found = answersOf(ex.id).filter(a => correct.includes(a.choice)).length;
+  let video = null;           // { blob } ou { url }
+  let facing = 'environment';
+
+  $('#app').innerHTML = `<a class="link" href="#/exo/${num}">← Challenge ${num}</a>
+    <h1>Correction du challenge ${num}</h1>
+    <div class="note gold">Bonne réponse : <b>${esc(good)}</b> · trouvée par <b>${found}</b> joueur${found > 1 ? 's' : ''} sur ${total}.</div>
+    <h2>Ta vidéo</h2>
+    <div id="vzone"></div>
+    <label class="field"><span>Un mot pour le club (facultatif)</span><textarea id="comment" rows="3" placeholder="Ex. Le coup g4 lance l'attaque avant que les Noirs ne jouent …f5."></textarea></label>
+    <div class="actions"><button class="btn gold" id="pub">Publier la correction</button></div>`;
+  $('#comment').value = ex.comment || '';
+
+  const zone = $('#vzone');
+  const choose = () => {
+    stopCamera();
+    zone.innerHTML = `
+      ${ex.video_url && !video ? `<div class="note">Vidéo actuelle :</div>${videoEmbed(ex.video_url)}<div style="height:10px"></div>` : ''}
+      <button class="btn" id="rec">🎥 Filmer ma correction</button><div style="height:8px"></div>
+      <label class="btn ghost" style="cursor:pointer">📁 Choisir une vidéo du téléphone<input id="file" type="file" accept="video/*" class="hidden"></label>
+      <details><summary>Ou coller un lien YouTube</summary><label class="field"><input id="yt" placeholder="https://youtu.be/..."></label><button class="btn small" id="ytok">Utiliser ce lien</button></details>`;
+    $('#rec').onclick = recordUI;
+    $('#file').onchange = (e) => {
+      const f = e.target.files[0]; if (!f) return;
+      if (f.size > MAX_VIDEO) { toast(`Vidéo trop lourde (${mb(f.size)}, maximum 50 Mo). Filme-la plutôt ici, c'est compressé automatiquement.`, true); e.target.value = ''; return; }
+      video = { blob: f }; preview();
+    };
+    $('#ytok').onclick = () => { const u = $('#yt').value.trim(); if (!ytId(u)) return toast('Lien YouTube non reconnu', true); video = { url: u }; preview(); };
+  };
+  const preview = () => {
+    stopCamera();
+    const src = video.blob ? URL.createObjectURL(video.blob) : null;
+    zone.innerHTML = (src ? `<video src="${src}" controls playsinline></video><p class="sub" style="margin-top:6px">${mb(video.blob.size)}</p>` : videoEmbed(video.url))
+      + `<button class="btn ghost" id="redo">Changer de vidéo</button>`;
+    $('#redo').onclick = () => { video = null; choose(); };
+  };
+  const recordUI = async () => {
+    const mime = pickMime();
+    if (mime === null || !navigator.mediaDevices?.getUserMedia) { toast("Ce téléphone ne permet pas de filmer ici : choisis une vidéo à la place.", true); return; }
+    zone.innerHTML = `<div class="rec"><video id="live" playsinline muted autoplay></video><div class="live hidden" id="lv"><i></i><span id="tm">0:00</span></div></div>
+      <div class="row" style="align-items:center;margin-top:14px"><button class="btn small ghost" id="cancel">Annuler</button><button class="recbtn" id="rb" aria-label="Enregistrer"><b></b></button><button class="btn small ghost" id="sw">↻ Caméra</button></div>
+      <p class="sub" style="text-align:center;margin-top:8px">5 minutes maximum. Le son est enregistré.</p>`;
+    const start = async () => {
+      if (camStream) camStream.getTracks().forEach(t => t.stop());
+      try {
+        camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true });
+      } catch (e) { toast("Accès à la caméra refusé. Autorise-le dans les réglages du navigateur.", true); choose(); return; }
+      const v = $('#live'); if (v) { v.srcObject = camStream; v.play().catch(() => {}); }
+    };
+    await start();
+    $('#sw').onclick = async () => { if (recorder) return; facing = facing === 'environment' ? 'user' : 'environment'; await start(); };
+    $('#cancel').onclick = () => choose();
+    $('#rb').onclick = () => {
+      const rb = $('#rb');
+      if (!recorder) {
+        if (!camStream) return;
+        const chunks = [];
+        const opts = { videoBitsPerSecond: 1_000_000, audioBitsPerSecond: 64_000 }; if (mime) opts.mimeType = mime;
+        try { recorder = new MediaRecorder(camStream, opts); } catch { recorder = new MediaRecorder(camStream); }
+        recorder.ondataavailable = (e) => e.data && e.data.size && chunks.push(e.data);
+        recorder.onstop = () => {
+          const type = (recorder && recorder.mimeType) || mime || 'video/mp4';
+          const blob = new Blob(chunks, { type: type.split(';')[0] });
+          recorder = null; clearInterval(recTimer);
+          if (camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+          if (!blob.size) { toast("L'enregistrement a échoué, réessaie.", true); return choose(); }
+          if (blob.size > MAX_VIDEO) { toast(`Vidéo trop lourde (${mb(blob.size)}). Fais plus court.`, true); return choose(); }
+          video = { blob }; preview();
+        };
+        recorder.start(1000);
+        const t0 = Date.now(); $('#lv').classList.remove('hidden'); rb.classList.add('on'); $('#sw').disabled = true;
+        recTimer = setInterval(() => {
+          const s = Math.floor((Date.now() - t0) / 1000); const tm = $('#tm'); if (tm) tm.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+          if (s >= MAX_REC_SECONDS && recorder) recorder.stop();
+        }, 500);
+      } else { recorder.stop(); }
+    };
+  };
+  choose();
+
+  $('#pub').onclick = async () => {
+    const b = $('#pub'); b.disabled = true;
+    try {
+      let url = ex.video_url || null;
+      if (video && video.blob) {
+        b.innerHTML = `<span class="spin"></span> Envoi de la vidéo (${mb(video.blob.size)})…`;
+        const type = (video.blob.type || 'video/mp4').split(';')[0];
+        const ext = type.includes('webm') ? 'webm' : type.includes('quicktime') ? 'mov' : 'mp4';
+        url = await S.api.uploadVideo(video.blob, `challenge-${num}-${Date.now()}.${ext}`);
+      } else if (video && video.url) url = video.url;
+      b.innerHTML = '<span class="spin"></span> Publication…';
+      await S.api.reveal(S.coach, ex.id, url, $('#comment').value);
+      await loadAll(); stopCamera();
+      $('#app').innerHTML = `<h1>Correction publiée 🎉</h1><p class="sub">Les joueurs voient maintenant la réponse, ta vidéo et le classement.</p>
+        <a class="btn green" href="${waLink(`✅ Correction du Challenge Caïssa ${num} en ligne, avec la vidéo du coach.\n👉 ${exoLink(num)}`)}" target="_blank" rel="noopener">Annoncer sur WhatsApp</a>
+        <div style="height:10px"></div><a class="btn" href="#/exo/${num}">Voir l'exo</a><div style="height:10px"></div><a class="btn ghost" href="#/classement">Voir le classement</a>`;
+    } catch (e) { toast(errMsg(e), true); b.disabled = false; b.textContent = 'Publier la correction'; }
+  };
+}
+
+// ================= Joueurs (coach) =================
+function viewMembers() {
+  if (!S.coach) { location.hash = '#/'; return; }
+  const list = [...S.members].sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+  $('#app').innerHTML = `<a class="link" href="#/">← Exos</a><h1>Joueurs</h1><p class="sub">Chacun s'ajoute tout seul. Ici tu peux retirer un doublon ou un faux nom.</p>
+    <ul class="lb">${list.map(m => `<li><span class="nm">${esc(m.name)}</span><span class="meta" style="color:var(--muted);font-size:13px">${S.answers.filter(a => a.member_id === m.id).length} rép.</span><button class="btn small danger" data-id="${m.id}">Retirer</button></li>`).join('') || '<div class="empty">Personne pour l’instant.</div>'}</ul>`;
+  $$('[data-id]').forEach(b => b.onclick = () => openSheet(`<h3>Retirer ${esc(memberName(b.dataset.id))} ?</h3><p class="sub">Ses réponses seront effacées.</p><button class="btn danger" data-a="yes">Retirer</button><div style="height:8px"></div><button class="btn ghost" data-a="no">Annuler</button>`, async (a) => {
+    if (a === 'no') return closeSheet();
+    try { await S.api.deleteMember(S.coach, b.dataset.id); await loadAll(); closeSheet(); viewMembers(); toast('Joueur retiré'); }
+    catch (e) { closeSheet(); toast(errMsg(e), true); }
+  }));
+}
+
+// ================= Démarrage =================
+(async () => {
+  try {
+    S.api = await makeApi();
+    await loadAll();
+  } catch (e) {
+    $('#app').innerHTML = `<h1>Connexion impossible</h1><p class="sub">${esc(errMsg(e))}</p><button class="btn" onclick="location.reload()">Réessayer</button>`;
+    return;
+  }
+  renderWho();
+  route();
+})();
+</script>
+</body>
+</html>
