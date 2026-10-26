@@ -149,6 +149,30 @@ iframe.yt{aspect-ratio:16/9;border:0}
 details summary{cursor:pointer;color:var(--muted);font-weight:700;font-size:14px;padding:8px 0}
 .loading{display:grid;place-items:center;padding:80px 0;color:var(--muted)}
 .hidden{display:none !important}
+.podium{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:8px;margin:18px 0 20px}
+.pod{text-align:center;min-width:0;animation:up .5s ease both}
+.pod.p1{animation-delay:.1s}.pod.p3{animation-delay:.2s}
+.pod .md{font-size:22px;line-height:1;margin-bottom:4px}
+.av{width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:14px;background:var(--card2);color:var(--text);border:2px solid var(--line)}
+.av.me{border-color:var(--gold)}
+.pod .av{width:52px;height:52px;font-size:18px;margin:0 auto 6px}
+.pod.p1 .av{width:66px;height:66px;font-size:22px;background:var(--gold);color:#16132c;border-color:var(--gold2)}
+.pod .nm{font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod .step{margin-top:8px;border-radius:14px 14px 0 0;background:linear-gradient(180deg,var(--card2),var(--bg2));display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:24px;line-height:1.1}
+.pod .step small{display:block;font-family:"Poppins",sans-serif;font-size:11px;font-weight:600;color:var(--muted)}
+.pod.p1 .step{height:104px;background:linear-gradient(180deg,rgba(224,150,105,.5),var(--bg2))}
+.pod.p2 .step{height:80px}.pod.p3 .step{height:62px}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.lb .who2{flex:1;min-width:0}
+.lb .who2 .nm{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dots{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--green)}.dots i.ko{background:var(--red)}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--green)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);animation:bl 1.6s infinite}
+.score{display:flex;align-items:center;gap:12px;background:linear-gradient(105deg,rgba(182,80,91,.35),rgba(22,19,44,.2));border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin:14px 0 0;color:var(--text);text-decoration:none}
+.score b{font-family:var(--head);font-size:22px}
+.score span{color:var(--muted);font-size:14px}
 .cg-wrap coords{font-weight:700;font-size:clamp(8px,2.4vw,11px);text-transform:lowercase}
 cg-board{background-color:#f4e9e0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Cdefs%3E%3Cpattern id='p' width='2' height='2' patternUnits='userSpaceOnUse'%3E%3Crect width='2' height='2' fill='%23f4e9e0'/%3E%3Crect x='1' width='1' height='1' fill='%23d39b7a'/%3E%3Crect y='1' width='1' height='1' fill='%23d39b7a'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='8' height='8' fill='url(%23p)'/%3E%3C/svg%3E") !important;background-size:100% 100% !important}
 .cg-wrap coords coord{color:#16132c !important;opacity:.7;text-transform:lowercase !important}
@@ -221,7 +245,7 @@ function toast(msg, err) {
 }
 function errMsg(e) {
   const m = (e && (e.message || e.error_description || e.error)) || String(e);
-  if (/not_coach/.test(m)) return "Lien coach invalide.";
+  if (/not_coach/.test(m)) return "Mode coach expiré : reconnecte-toi avec le mot de passe.";
   if (/answers_exercise_id_member_id_key|duplicate key.*answers/.test(m)) return 'Tu as déjà répondu à cet exo.';
   if (/members_name_uniq/.test(m)) return 'Ce prénom existe déjà : choisis-le dans la liste.';
   if (/row-level security.*answers/.test(m)) return 'Trop tard : la correction est publiée.';
@@ -232,6 +256,7 @@ function errMsg(e) {
 const base = () => location.origin + location.pathname;
 const exoLink = (num) => `${base()}#/exo/${num}`;
 const waLink = (text) => `https://wa.me/?text=${encodeURIComponent(text)}`;
+const shareText = (ex) => `♞ Challenge Caïssa ${ex.num} : ${ex.question || `Que jouent les ${turnOf(ex.fen) === 'white' ? 'Blancs' : 'Noirs'} ?`}\nRéponds ici 👉 ${exoLink(ex.num)}`;
 
 // ================= État =================
 const S = { api: null, members: [], exercises: [], answers: [], sol: {}, boards: [], coach: store.get('coach'), meId: store.get('me') };
@@ -265,7 +290,7 @@ function renderWho() {
   const b = $('#who'); const m = me();
   if (S.coach) { b.className = 'chip coach'; b.innerHTML = '★ Coach'; }
   else if (m) { b.className = 'chip'; b.innerHTML = `<span class="dot">${esc(initials(m.name))}</span>${esc(m.name)}`; }
-  else { b.className = 'chip'; b.innerHTML = 'Qui es-tu ?'; }
+  else { b.className = 'chip'; b.innerHTML = 'Créer mon profil'; }
 }
 $('#who').addEventListener('click', () => {
   if (!S.coach && !me()) return pickIdentity();
@@ -287,7 +312,7 @@ function openSheet(html, onAction) {
   L.innerHTML = `<div class="overlay"><div class="sheet">${html}</div></div>`;
   const ov = $('.overlay', L);
   ov.addEventListener('click', (e) => {
-    if (e.target === ov) return closeSheet();
+    if (e.target === ov) { closeSheet(); if (onAction) onAction('__close'); return; }
     const t = e.target.closest('[data-a]'); if (t && onAction) onAction(t.dataset.a, t);
   });
   return ov;
@@ -297,17 +322,18 @@ function closeSheet() { $('#layer').innerHTML = ''; }
 function pickIdentity(after) {
   const list = [...S.members].sort((a, b) => a.name.localeCompare(b.name, 'fr'));
   const ov = openSheet(`
-    <h3>Qui es-tu ?</h3>
-    <p class="sub">Touche ton prénom. C'est tout, le téléphone s'en souviendra.</p>
+    <h3>${list.length ? 'Qui es-tu ?' : 'Crée ton profil'}</h3>
+    <p class="sub">${list.length ? 'Touche ton prénom si tu as déjà un profil, sinon crée-le. Le téléphone s\'en souviendra.' : 'Juste ton prénom, et c\'est parti.'}</p>
     ${list.length > 8 ? '<label class="field"><input id="q" placeholder="Chercher un prénom" autocomplete="off"></label>' : ''}
     <div class="names" id="names">${list.map(m => `<button data-a="pick" data-id="${m.id}">${esc(m.name)}</button>`).join('')}</div>
     <div id="addbox">
-      <button class="btn ghost" data-a="new">Je ne suis pas dans la liste</button>
-      <div style="text-align:center;margin-top:6px"><button class="link" data-a="coach">★ Je suis le coach</button></div>
-    </div>`, async (a, t) => {
+      <button class="btn gold" data-a="new">＋ Créer mon profil</button>
+    </div>
+    <div id="coachbox" style="text-align:center;margin-top:8px"><button class="link" data-a="coach">★ Je suis le coach</button></div>`, async (a, t) => {
     if (a === 'coach') {
-      $('#addbox').innerHTML = `<label class="field"><span>Mot de passe coach</span><input id="ck" type="password" autocomplete="off" autocapitalize="none" autocorrect="off"></label><button class="btn gold" data-a="coachok">Entrer</button>`;
+      $('#coachbox').innerHTML = `<label class="field" style="text-align:left"><span>Mot de passe coach</span><input id="ck" type="password" autocomplete="off" autocapitalize="none" autocorrect="off"></label><button class="btn gold" data-a="coachok">Entrer</button>`;
       $('#ck').focus();
+      $('#ck').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $('[data-a="coachok"]').click(); } });
     }
     if (a === 'coachok') {
       const k = $('#ck').value.trim().toLowerCase().replace(/\s+/g, '');
@@ -320,19 +346,24 @@ function pickIdentity(after) {
     }
     if (a === 'pick') { setMe(t.dataset.id); closeSheet(); after && after(); }
     if (a === 'new') {
-      $('#addbox').innerHTML = `<label class="field"><span>Ton prénom (et l'initiale du nom si besoin)</span><input id="newname" maxlength="40" placeholder="Ex. Paul D." autocomplete="off"></label><button class="btn gold" data-a="add">C'est moi</button>`;
+      $('#addbox').innerHTML = `<label class="field"><span>Ton prénom (et l'initiale du nom si besoin)</span><input id="newname" maxlength="40" placeholder="Ex. Paul D." autocomplete="off" enterkeyhint="done"></label><button class="btn gold" data-a="add">Créer mon profil</button>`;
       $('#newname').focus();
+      $('#newname').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $('[data-a="add"]').click(); } });
     }
     if (a === 'add') {
       const name = $('#newname').value.trim().replace(/\s+/g, ' ');
       if (!name) return;
-      const exists = S.members.find(m => m.name.toLowerCase() === name.toLowerCase());
-      if (exists) { setMe(exists.id); closeSheet(); after && after(); return; }
+      const exists = S.members.find(m => m.name.trim().toLowerCase() === name.toLowerCase());
+      if (exists) {
+        $('#addbox').innerHTML = `<div class="note gold">Un profil <b>${esc(exists.name)}</b> existe déjà. C'est toi ?</div><button class="btn gold" data-a="pick" data-id="${exists.id}">Oui, c'est moi</button><div style="height:8px"></div><button class="btn ghost" data-a="new">Non, j'ajoute l'initiale de mon nom</button>`;
+        return;
+      }
       t.disabled = true; t.innerHTML = '<span class="spin"></span>';
       try { const m = await S.api.addMember(name); S.members.push(m); setMe(m.id); closeSheet(); toast(`Bienvenue ${m.name} !`); after && after(); }
-      catch (e) { toast(errMsg(e), true); t.disabled = false; t.textContent = "C'est moi"; }
+      catch (e) { try { await loadAll(); } catch {} toast(errMsg(e), true); t.disabled = false; t.textContent = 'Créer mon profil'; }
     }
   });
+  if (!list.length) $('[data-a="new"]', ov).click();
   const q = $('#q', ov);
   if (q) q.addEventListener('input', () => {
     const v = q.value.trim().toLowerCase();
@@ -344,7 +375,7 @@ function setMe(id) { S.meId = id; store.set('me', id); renderWho(); route(); }
 // ================= Routage =================
 let pollTimer = null;
 async function route() {
-  clearBoards(); clearInterval(pollTimer); stopCamera();
+  clearBoards(); clearInterval(pollTimer); stopCamera(); S.busy = false;
   const h = location.hash.replace(/^#\/?/, '');
   const [p, a, b] = h.split('/');
   window.scrollTo(0, 0);
@@ -359,14 +390,15 @@ async function route() {
 window.addEventListener('hashchange', route);
 const softViews = () => /^#?\/?(exo\/\d+)?$|^#\/classement$|^#\/$/.test(location.hash) || location.hash === '';
 document.addEventListener('visibilitychange', async () => {
-  if (document.visibilityState === 'visible' && softViews() && !$('#layer').innerHTML) { try { await loadAll(); route(); } catch {} }
+  if (document.visibilityState === 'visible' && softViews() && !$('#layer').innerHTML && !S.busy) { try { const y = window.scrollY; await loadAll(); renderWho(); await route(); window.scrollTo(0, y); } catch {} }
 });
 function poll(ms = 25000) {
   pollTimer = setInterval(async () => {
-    if (document.visibilityState !== 'visible' || $('#layer').innerHTML) return;
-    const before = JSON.stringify([S.exercises.map(e => e.status), S.answers.length]);
+    if (document.visibilityState !== 'visible' || $('#layer').innerHTML || S.busy) return;
+    const sig = () => JSON.stringify([S.exercises.map(e => [e.num, e.status, e.video_url, e.comment]), S.answers.length, S.members.length]);
+    const before = sig();
     try { await loadAll(); } catch { return; }
-    if (JSON.stringify([S.exercises.map(e => e.status), S.answers.length]) !== before) route();
+    if (sig() !== before && !S.busy) { const y = window.scrollY; renderWho(); await route(); window.scrollTo(0, y); }
   }, ms);
 }
 
@@ -374,7 +406,7 @@ async function enterCoach(key) {
   try {
     const ok = await S.api.coachOk(key);
     if (ok) { S.coach = key; store.set('coach', key); toast('Mode coach activé ★'); }
-    else toast('Lien coach invalide', true);
+    else toast('Mot de passe coach incorrect', true);
   } catch (e) { toast(errMsg(e), true); }
   renderWho();
   history.replaceState(null, '', '#/'); route();
@@ -398,7 +430,8 @@ function viewHome() {
   const waiting = coach ? [] : open.filter(e => myAnswer(e.id));
   let html = tabs('exos');
   if (coach) html += `<div style="margin-top:14px"><a class="btn gold" href="#/nouveau">＋ Nouvel exo</a></div>`;
-  if (!coach && !m && S.exercises.length) html += `<div class="note gold">👋 <b>Touche « Qui es-tu ? » en haut</b> pour répondre et suivre ton score.</div>`;
+  if (!coach && !m) html += `<div class="note gold">👋 <b>Bienvenue au club !</b> Crée ton profil en 2 secondes pour répondre aux challenges et entrer au classement.<div style="height:10px"></div><button class="btn gold" id="mkprofile">Créer mon profil</button></div>`;
+  if (!coach && m) { const sc = myScore(); html += `<a class="score" href="#/classement"><span class="av me">${esc(initials(m.name))}</span><div style="flex:1"><b>${sc.pts} pt${sc.pts > 1 ? 's' : ''}</b> <span>${sc.rank ? `· ${sc.rank}${sc.rank === 1 ? 'er' : 'e'} sur ${sc.n}` : '· pas encore classé'}</span></div><span>Classement →</span></a>`; }
   html += `<h2>${coach ? 'En cours' : 'À toi de jouer'}</h2>`;
   html += todo.length ? todo.map(e => {
     const n = answersOf(e.id).length;
@@ -421,36 +454,54 @@ function viewHome() {
   }
   $('#app').innerHTML = html;
   $$('.mini .board').forEach(el => viewBoard(el, el.dataset.fen, { coordinates: false }));
-  poll();
+  const mk = $('#mkprofile'); if (mk) mk.onclick = () => pickIdentity();
+  poll(15000);
 }
 
 // ================= Classement =================
 function scores() {
-  const revealed = S.exercises.filter(e => e.status === 'revealed');
-  const ids = new Set(revealed.map(e => e.id));
+  const revealed = S.exercises.filter(e => e.status === 'revealed').sort((a, b) => a.num - b.num);
+  const byEx = new Map(revealed.map(e => [e.id, e]));
   const by = {};
   for (const a of S.answers) {
-    if (!ids.has(a.exercise_id)) continue;
-    const e = revealed.find(x => x.id === a.exercise_id);
-    const r = by[a.member_id] ||= { id: a.member_id, pts: 0, played: 0 };
-    r.played++; if ((e.correct || []).includes(a.choice)) r.pts++;
+    const e = byEx.get(a.exercise_id); if (!e) continue;
+    const r = by[a.member_id] ||= { id: a.member_id, pts: 0, played: 0, res: {} };
+    const ok = (e.correct || []).includes(a.choice);
+    r.played++; if (ok) r.pts++; r.res[e.id] = ok;
   }
-  return { rows: Object.values(by).sort((x, y) => y.pts - x.pts || x.played - y.played || memberName(x.id).localeCompare(memberName(y.id), 'fr')), total: revealed.length };
+  const rows = Object.values(by).filter(r => S.members.some(m => m.id === r.id))
+    .sort((x, y) => y.pts - x.pts || x.played - y.played || memberName(x.id).localeCompare(memberName(y.id), 'fr'));
+  let rank = 0, prev = null;
+  rows.forEach((r, i) => { const key = r.pts + '/' + r.played; if (key !== prev) { rank = i + 1; prev = key; } r.rank = rank; });
+  return { rows, revealed };
+}
+function myScore() {
+  const { rows } = scores(); const r = rows.find(x => x.id === S.meId);
+  return { pts: r ? r.pts : 0, rank: r ? r.rank : 0, n: rows.length };
 }
 function viewBoardTable() {
-  const { rows, total } = scores();
-  let html = tabs('lb') + `<h1>Classement</h1><p class="sub">1 point par bonne réponse · ${total} exo${total > 1 ? 's' : ''} corrigé${total > 1 ? 's' : ''}</p>`;
-  if (!rows.length) html += `<div class="empty">Le classement s'affiche dès la première correction publiée.</div>`;
-  else {
-    let rank = 0, prev = null;
-    html += `<ul class="lb">` + rows.map((r, i) => {
-      if (prev === null || r.pts !== prev) { rank = i + 1; prev = r.pts; }
-      const medal = (r.pts > 0 && { 1: '🥇', 2: '🥈', 3: '🥉' }[rank]) || rank;
-      return `<li class="${r.id === S.meId ? 'me' : ''}"><span class="rk">${medal}</span><span class="nm">${esc(memberName(r.id))}</span><span class="pts">${r.pts}<small>sur ${r.played}</small></span></li>`;
+  const { rows, revealed } = scores();
+  const last = revealed.slice(-10);
+  const total = revealed.length;
+  let html = tabs('lb') + `<h1>Classement</h1><p class="sub">1 point par bonne réponse · ${total} challenge${total > 1 ? 's' : ''} corrigé${total > 1 ? 's' : ''} · <span class="live">en direct</span></p>`;
+  if (!rows.length) {
+    html += `<div class="empty">Le classement s'affiche dès la première correction publiée.</div>`;
+  } else {
+    const top = rows.slice(0, 3);
+    const pod = (r, p) => r ? `<div class="pod p${p}"><div class="md">${r.pts > 0 ? (['🥇', '🥈', '🥉'][r.rank - 1] || '') : ''}</div><div class="av ${r.id === S.meId ? 'me' : ''}">${esc(initials(memberName(r.id)))}</div><div class="nm">${esc(memberName(r.id))}</div><div class="step">${r.pts}<small>pt${r.pts > 1 ? 's' : ''} · ${r.played} joué${r.played > 1 ? 's' : ''}</small></div></div>` : '<div></div>';
+    html += `<div class="podium">${pod(top[1], 2)}${pod(top[0], 1)}${pod(top[2], 3)}</div>`;
+    html += `<ul class="lb">` + rows.map(r => {
+      const dots = last.map(e => `<i class="${r.res[e.id] === true ? 'ok' : r.res[e.id] === false ? 'ko' : ''}" title="Challenge ${e.num}"></i>`).join('');
+      const pct = Math.round(r.pts * 100 / r.played);
+      return `<li class="${r.id === S.meId ? 'me' : ''}"><span class="rk">${r.rank}</span><span class="av ${r.id === S.meId ? 'me' : ''}">${esc(initials(memberName(r.id)))}</span><span class="who2"><span class="nm">${esc(memberName(r.id))}</span><span class="dots">${dots}</span></span><span class="pts">${r.pts}<small>${pct} % réussite</small></span></li>`;
     }).join('') + `</ul>`;
+    if (S.meId && !rows.some(r => r.id === S.meId)) html += `<div class="note">Tu n'es pas encore classé : réponds au prochain challenge !</div>`;
+    else if (!S.meId && !S.coach) html += `<div class="note gold">Crée ton profil pour entrer au classement.<div style="height:10px"></div><button class="btn gold" id="mkprofile">Créer mon profil</button></div>`;
+    html += `<p class="sub" style="font-size:13px;margin-top:12px">Pastilles : ${last.length > 1 ? `les ${last.length} derniers challenges corrigés` : 'le dernier challenge corrigé'} (vert trouvé, rouge raté, gris pas joué).</p>`;
   }
   $('#app').innerHTML = html;
-  poll();
+  const mk = $('#mkprofile'); if (mk) mk.onclick = () => pickIdentity();
+  poll(10000);
 }
 
 // ================= Exo (membres et coach) =================
@@ -487,8 +538,8 @@ async function viewExo(num) {
     if (!ex.video_url && !ex.comment) html += `<div class="note">Correction publiée.</div>`;
     if (coach) html += `<div style="height:14px"></div><a class="btn" href="#/exo/${ex.num}/correction">Modifier la correction</a>`;
   } else if (coach) {
-    html += `<div class="note gold"><b>${total} réponse${total > 1 ? 's' : ''}</b> pour l'instant. Toi seul vois les choix avant la correction.</div>
-      <a class="btn green" href="${waLink(`♞ Challenge Caïssa ${ex.num} : ${ex.question}\nRéponds ici 👉 ${exoLink(ex.num)}`)}" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+    html += `<div class="note gold"><b>${total} réponse${total > 1 ? 's' : ''}</b> pour l'instant. Les joueurs ne voient pas les choix des autres avant la correction.</div>
+      <a class="btn green" href="${waLink(shareText(ex))}" target="_blank" rel="noopener">Partager sur WhatsApp</a>
       <div class="actions"><a class="btn gold" href="#/exo/${ex.num}/correction">Publier la correction</a></div>`;
   } else if (mine) {
     html += `<div class="note"><b>Réponse enregistrée.</b> Résultat dès que le coach publie la correction. ${total > 1 ? `${total} joueurs ont déjà répondu.` : ''}</div>`;
@@ -505,7 +556,7 @@ async function viewExo(num) {
   $$('.opt').forEach(btn => btn.addEventListener('click', () => {
     const i = +btn.dataset.i;
     if (btn.dataset.locked) { cg.setAutoShapes([uciShape(ex.options[i].uci, correct.includes(i) ? 'green' : (showStats ? 'red' : 'yellow'))]); return; }
-    sel = i; $$('.opt').forEach(b => b.classList.toggle('sel', b === btn));
+    sel = i; S.busy = true; $$('.opt').forEach(b => b.classList.toggle('sel', b === btn));
     cg.setAutoShapes([uciShape(ex.options[i].uci, 'yellow')]);
     const go = $('#go'); go.disabled = false; go.textContent = `Valider ${moveLabel(ex.fen, ex.options[i].san)}`;
   }));
@@ -558,7 +609,12 @@ function castling(placement) {
   if (sq(4, 8) === 'k') { if (sq(7, 8) === 'r') c += 'k'; if (sq(0, 8) === 'r') c += 'q'; }
   return c || '-';
 }
-const fullFen = (d) => `${d.placement} ${d.turn} ${castling(d.placement)} - 0 1`;
+const fullFen = (d) => {
+  const p = d.pasted && d.pasted.placement === d.placement ? d.pasted : null;
+  const c = p && /^(-|K?Q?k?q?)$/.test(p.castle) && p.castle ? p.castle : castling(d.placement);
+  const ep = p && /^(-|[a-h][36])$/.test(p.ep) && p.turn === d.turn ? p.ep : '-';
+  return `${d.placement} ${d.turn} ${c} ${ep} 0 1`;
+};
 function checkPosition(d) {
   const p = d.placement;
   const count = (ch) => p.split('').filter(c => c === ch).length;
@@ -566,7 +622,7 @@ function checkPosition(d) {
   const rows = p.split('/');
   if (/[pP]/.test(rows[0]) || /[pP]/.test(rows[7])) return 'Un pion ne peut pas être sur la première ou la dernière rangée.';
   let ch;
-  try { ch = new Chess(fullFen(d)); } catch (e) { return 'Position impossible : ' + (e.message || e); }
+  try { ch = new Chess(fullFen(d)); } catch (e) { return 'Position impossible : vérifie les pièces et le trait.'; }
   const other = d.turn === 'w' ? 'b' : 'w';
   const kingSq = ch.board().flat().find(x => x && x.type === 'k' && x.color === other)?.square;
   if (kingSq && ch.isAttacked(kingSq, d.turn)) return `Le roi ${other === 'w' ? 'blanc' : 'noir'} est en échec alors que ce n'est pas son tour : vérifie le trait.`;
@@ -579,7 +635,7 @@ function parsePasted(txt) {
   if (m) s = decodeURIComponent(m[1]).replace(/_/g, ' ');
   const parts = s.split(/\s+/);
   if (!/^([pnbrqkPNBRQK1-8]+\/){7}[pnbrqkPNBRQK1-8]+$/.test(parts[0])) return null;
-  return { placement: parts[0], turn: parts[1] === 'b' ? 'b' : 'w' };
+  return { placement: parts[0], turn: parts[1] === 'b' ? 'b' : 'w', castle: parts[2] || '', ep: parts[3] || '-' };
 }
 
 function viewEditor() {
@@ -644,7 +700,7 @@ function editorPosition(d) {
   $('#pasteok').onclick = () => {
     const r = parsePasted($('#paste').value);
     if (!r) return toast('Je ne reconnais pas cette position.', true);
-    d.placement = r.placement; d.turn = r.turn; saveDraft(d);
+    d.placement = r.placement; d.turn = r.turn; d.pasted = r.castle ? { placement: r.placement, turn: r.turn, castle: r.castle, ep: r.ep } : null; saveDraft(d);
     orientation = d.turn === 'w' ? 'white' : 'black'; store.set('editorOrient', orientation);
     cg.set({ fen: d.placement, orientation }); turnBtns(); toast('Position chargée');
   };
@@ -692,7 +748,7 @@ function editorMoves(d) {
     const p = chess.get(orig);
     if (p && p.type === 'p' && (dest[1] === '8' || dest[1] === '1')) {
       openSheet(`<h3>Promotion</h3><div class="promo">${['q', 'r', 'b', 'n'].map(r => `<button class="pal cg-wrap" data-a="${r}"><piece class="${ROLES[r]} ${color}"></piece></button>`).join('')}</div><button class="btn ghost" data-a="x">Annuler</button>`, (a) => {
-        closeSheet(); if (a === 'x') return reset(); add(orig, dest, a);
+        closeSheet(); if (a === 'x' || a === '__close') return reset(); if (['q', 'r', 'b', 'n'].includes(a)) add(orig, dest, a);
       });
     } else add(orig, dest);
   };
@@ -716,7 +772,7 @@ function editorMoves(d) {
     if (S.exercises.some(e => e.num === d.num)) return toast(`Le challenge ${d.num} existe déjà : change le numéro.`, true);
     b.disabled = true; b.innerHTML = '<span class="spin"></span> Publication…';
     try {
-      await S.api.createExercise(S.coach, { num: d.num, fen, question: (d.question || '').trim(), options: d.options, correct: d.correct });
+      await S.api.createExercise(S.coach, { num: d.num, fen, question: (d.question || '').trim() || `Que jouent les ${d.turn === 'w' ? 'Blancs' : 'Noirs'} ?`, options: d.options, correct: d.correct });
       const num = d.num; store.set('draft', null); await loadAll(); shareScreen(num);
     } catch (e) { toast(errMsg(e), true); b.disabled = false; b.textContent = "Publier l'exo"; }
   };
@@ -726,7 +782,7 @@ function shareScreen(num) {
   const ex = exoByNum(num);
   $('#app').innerHTML = `${stepsBar(3)}<h1>Challenge ${num} publié 🎉</h1><p class="sub">Envoie le lien au groupe du club.</p>
     <div class="boardbox" style="max-width:260px;margin:10px auto 18px"><div class="board" id="b"></div></div>
-    <a class="btn green" href="${waLink(`♞ Challenge Caïssa ${num} : ${ex.question}\nRéponds ici 👉 ${exoLink(num)}`)}" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+    <a class="btn green" href="${waLink(shareText(ex))}" target="_blank" rel="noopener">Partager sur WhatsApp</a>
     <div style="height:10px"></div><button class="btn" id="copy">Copier le lien</button>
     <div style="height:10px"></div><a class="btn ghost" href="#/exo/${num}">Voir l'exo</a>`;
   viewBoard($('#b'), ex.fen, { coordinates: false });
@@ -736,7 +792,7 @@ function shareScreen(num) {
 // ================= Correction (coach) =================
 let camStream = null, recorder = null, recTimer = null;
 function stopCamera() {
-  try { if (recorder && recorder.state !== 'inactive') recorder.stop(); } catch {}
+  try { if (recorder) { recorder.onstop = null; recorder.ondataavailable = null; if (recorder.state !== 'inactive') recorder.stop(); } } catch {}
   recorder = null; clearInterval(recTimer);
   if (camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
 }
@@ -808,10 +864,14 @@ async function viewReveal(num) {
       const rb = $('#rb');
       if (!recorder) {
         if (!camStream) return;
-        const chunks = [];
+        const chunks = []; let bytes = 0;
         const opts = { videoBitsPerSecond: 1_000_000, audioBitsPerSecond: 64_000 }; if (mime) opts.mimeType = mime;
         try { recorder = new MediaRecorder(camStream, opts); } catch { recorder = new MediaRecorder(camStream); }
-        recorder.ondataavailable = (e) => e.data && e.data.size && chunks.push(e.data);
+        recorder.ondataavailable = (e) => {
+          if (!e.data || !e.data.size) return;
+          chunks.push(e.data); bytes += e.data.size;
+          if (bytes > MAX_VIDEO * 0.9 && recorder && recorder.state === 'recording') { toast('Taille maximale atteinte : enregistrement arrêté.'); recorder.stop(); }
+        };
         recorder.onstop = () => {
           const type = (recorder && recorder.mimeType) || mime || 'video/mp4';
           const blob = new Blob(chunks, { type: type.split(';')[0] });
@@ -846,7 +906,7 @@ async function viewReveal(num) {
       await S.api.reveal(S.coach, ex.id, url, $('#comment').value);
       await loadAll(); stopCamera();
       $('#app').innerHTML = `<h1>Correction publiée 🎉</h1><p class="sub">Les joueurs voient maintenant la réponse, ta vidéo et le classement.</p>
-        <a class="btn green" href="${waLink(`✅ Correction du Challenge Caïssa ${num} en ligne, avec la vidéo du coach.\n👉 ${exoLink(num)}`)}" target="_blank" rel="noopener">Annoncer sur WhatsApp</a>
+        <a class="btn green" href="${waLink(`✅ Correction du Challenge Caïssa ${num} en ligne${url ? ', avec la vidéo du coach' : ''}.\n👉 ${exoLink(num)}`)}" target="_blank" rel="noopener">Annoncer sur WhatsApp</a>
         <div style="height:10px"></div><a class="btn" href="#/exo/${num}">Voir l'exo</a><div style="height:10px"></div><a class="btn ghost" href="#/classement">Voir le classement</a>`;
     } catch (e) { toast(errMsg(e), true); b.disabled = false; b.textContent = 'Publier la correction'; }
   };
